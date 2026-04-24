@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(145deg,#f0f4f8,#e2e8f0);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        .c{background:#fff;border-radius:30px;padding:30px;width:100%;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.1);text-align:center}
+        h2{color:#4f46e5;margin-bottom:20px;font-size:1.8rem}
+        input{width:100%;padding:14px;margin-bottom:12px;border:3px solid #e2e8f0;border-radius:14px;font-size:1rem;display:none}
+        input.show{display:block}
+        button{width:100%;padding:14px;background:#4f46e5;color:#fff;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;margin-top:10px}
+        button:hover{background:#4338ca}
+        .t{background:none;color:#4f46e5;margin-top:15px;text-decoration:underline;font-size:0.9rem}
+        .e{color:#ef4444;font-size:0.85rem;display:none;margin-bottom:10px}
+        .e.show{display:block}
+    </style>
+</head>
+<body>
+<div class="c">
+    <h2 id="title">تسجيل الدخول</h2>
+    <p class="e" id="error"></p>
+    
+    <input type="text" id="name" placeholder="الاسم الكامل">
+    <input type="email" id="email" placeholder="البريد الإلكتروني" class="show">
+    <input type="password" id="pass" placeholder="كلمة المرور" class="show">
+    
+    <button onclick="submit()" id="btn">تسجيل الدخول</button>
+    <button class="t" onclick="toggle()" id="toggle">ليس لديك حساب؟ سجل الآن</button>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+
+const app = initializeApp({apiKey:"AIzaSyDjyF_1GkKPR4O1CyhCvU2cRCIMfeCyYOw",authDomain:"eng5-35f2a.firebaseapp.com",projectId:"eng5-35f2a",storageBucket:"eng5-35f2a.firebasestorage.app",messagingSenderId:"721663141041",appId:"1:721663141041:web:8a0737f2f7e29ff7832e90"});
+const auth = getAuth(app);
+
+let mode = 'login';
+
+window.toggle = () => {
+    mode = mode === 'login' ? 'register' : 'login';
+    document.getElementById('title').textContent = mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
+    document.getElementById('btn').textContent = mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
+    document.getElementById('toggle').textContent = mode === 'login' ? 'ليس لديك حساب؟ سجل الآن' : 'لديك حساب؟ سجل دخول';
+    document.getElementById('name').classList.toggle('show', mode === 'register');
+    document.getElementById('error').classList.remove('show');
+};
+
+window.submit = async () => {
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('pass').value.trim();
+    const name = document.getElementById('name').value.trim();
+    const errEl = document.getElementById('error');
+    errEl.classList.remove('show');
+    
+    if (!email || !pass) return errEl.textContent = 'املأ جميع الحقول', errEl.classList.add('show');
+    if (mode === 'register' && !name) return errEl.textContent = 'الاسم مطلوب', errEl.classList.add('show');
+    
+    try {
+        if (mode === 'login') {
+            await signInWithEmailAndPassword(auth, email, pass);
+        } else {
+            const result = await createUserWithEmailAndPassword(auth, email, pass);
+            await updateProfile(result.user, {displayName: name});
+        }
+        window.location.href = 'https://amanhsn55555-eng.github.io/Inglish/';
+    } catch (e) {
+        const msg = e.code === 'auth/email-already-in-use' ? 'البريد مسجل مسبقاً' :
+                    e.code === 'auth/invalid-credential' ? 'بريد أو كلمة مرور خطأ' :
+                    e.code === 'auth/weak-password' ? 'كلمة المرور ضعيفة' : 'حدث خطأ';
+        errEl.textContent = msg;
+        errEl.classList.add('show');
+    }
+};
+</script>
+</body>
+</html>
