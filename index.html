@@ -8,21 +8,21 @@
         *{box-sizing:border-box;margin:0;padding:0}
     
    body{font-family:'Segoe UI',Tahoma,sans-serif;background-image:url('https://iili.io/B65ES0x.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-    
+    h2{display:none}
         .c{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border:none;box-shadow:none}
-    h2{color:#4f46e5;margin-bottom:2px;font-size:1rem}
-        input{width:100%;padding:4px;margin-bottom:2px;border:3px solid #e2e8f0;border-radius:4px;font-size:1rem;display:none}
+    h2{color:#4f46e5;margin-bottom:5px;font-size:1rem}
+        input{width:100%;padding:4px;margin-bottom:2px;border:3px solid #e2e8f0;border-radius:14px;font-size:1rem;display:none}
         input.show{display:block}
-        button{width:50%;padding:4px;background:#4f46e5;color:#fff;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;margin-top:10px}
+        button{width:60%;padding:4px;background:#4f46e5;color:#fff;border:none;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;margin-top:10px}
         button:hover{background:#4338ca}
-        .t{background:none;color:#4f46e5;margin-top:5px;text-decoration:underline;font-size:0.9rem}
+        .t{background:none;color:#4f46e5;margin-top:15px;text-decoration:underline;font-size:0.9rem}
         .e{color:#ef4444;font-size:0.85rem;display:none;margin-bottom:10px}
         .e.show{display:block}
     </style>
 </head>
 <body>
 <div class="c">
-    <h2 id="title"></h2
+    <h2 id="title">تسجيل الدخول</h2>
     <p class="e" id="error"></p>
     
     <input type="text" id="name" placeholder="الاسم الكامل">
@@ -44,7 +44,7 @@ let mode = 'login';
 
 window.toggle = () => {
     mode = mode === 'login' ? 'register' : 'login';
-    document.getElementById('title').textContent = mode === 'login' ? '' : '';
+    document.getElementById('title').textContent = mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
     document.getElementById('btn').textContent = mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
     document.getElementById('toggle').textContent = mode === 'login' ? 'ليس لديك حساب؟ سجل الآن' : 'لديك حساب؟ سجل دخول';
     document.getElementById('name').classList.toggle('show', mode === 'register');
